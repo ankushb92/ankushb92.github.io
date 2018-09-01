@@ -1,0 +1,22 @@
+---
+layout: post
+title: Is Free Will an illusion?
+tags: [ metaphysics, philosophy ]
+---
+
+The question of Free Will can be stated as follows:
+Does the human condition allow us the ability to make decisions on our own or are all our thoughts and actions the result of physical and biological processes and genetic and environmental factors that are outside of our control?
+
+This is one of the hardest questions I have ever had to think about. Every instinct in me (and probably every other human being) tells me that I have free will. The idea that I do not have free will means that I am no more than a very complex machine that has somehow convinced itself that it is acting out of its own free will while being entirely subject of its own physical makeup and external factors outside of its control.
+
+I watched this interesting discussion about Free Will between Sam Harris and Joe Rogan:
+{% include youtube-player.html id="aAnlBW5INYg" %}
+<br/>
+The discussion goes around in circles with Sam Harris bringing up the same points again and again with Joe Regan seemingly having trouble accepting them (as would any other person who is toying with the idea for the first time).
+
+Sam Harris mainly brings up these points:
+* Libet experiments: A series of experiments that showed that it's possible to predict a subject's decision of moving either their right or left hand even before they have actually made their decision (by observing their brain states using fMRI).
+* Charles Whitman: A mass murderer who requested an autopsy in his final note expressing that he felt something in his brain had compelled him to do what he did. The autopsy revealed that he had a pecan-sized brain tumor pressing against his amygdala. Just like the knowledge of the presence of the tumor made us understand why he did what he did, if we had a perfect understanding of the human brain, we would be able to understand that all our actions are the result of physical processes in our brain.
+* Thought Experiment: When asked to think of a random city or person, we are able to do it but we don't know how we did it. Thoughts seem to arise in our mind on their own and if we pay close attention, we realize that we are not the thinker of our thoughts.
+
+I think that the arguments put forth by Sam Harris in favor of free will are convincing but what concerns me is what does believing that we do not have free will lead us to? Isn't the idea that we do not have free will inherently gloomy? I feel that it is not possible to be aware of the absence of free will at all times and still be a functional person. However, bringing it to our awareness once in a while can help calm us down and make us more centered and be in the present moment (which is stated as the purpose of meditation in quite a few Hindu and Buddhist traditions).
