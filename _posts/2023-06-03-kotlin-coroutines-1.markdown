@@ -12,9 +12,9 @@ A coroutine is an instance of suspendable computation. It is conceptually simila
 ### Problem: How to merge k sorted lists into a single sorted list?  
 Let's solve the problem of merging k sorted lists such that the resulting list is sorted. For example:  
 When given these 3 lists as input:  
-`[5,2,3]`  
-`[2,30,1,-1,239]`  
-`[-3,-5,8,-1,22,39]`
+`[2, 3, 5]`  
+`[-1, 1, 2, 30, 239]`  
+`[-5, -3, -1, 8, 22, 39]`
 
 We can expect an output as follows:  
 `[-5, -3, -1, -1, 1, 2, 2, 3, 5, 8, 22, 30, 39, 239]`
@@ -37,11 +37,11 @@ fun mergeKSortedLists(lists: List<List<Int>>): List<Int> {
 ```
 
 What we did above is as follows:
-1) Put all `k` input lists in a queue
-2) Pop two lists from the start of the queue and call the `mergeTwoSortedLists(list1, list2)` function on them. We will look at the `mergeTwoSortedLists` function in a little bit.
-3) Push the merged list to the end of the queue.
-4) Repeat steps 2 and 3 until only 1 list remains in the queue. This should happen in `k-1` iterations.
-5) Return the single list remaining in the queue as the answer.
+1. Put all `k` input lists in a queue
+2. Pop two lists from the start of the queue and call the `mergeTwoSortedLists(list1, list2)` function on them. We will look at the `mergeTwoSortedLists` function in a little bit.
+3. Push the merged list to the end of the queue.
+4. Repeat steps 2 and 3 until only 1 list remains in the queue. This should happen in `k-1` iterations.
+5. Return the single list remaining in the queue as the answer.
 
 Now let's look at the `mergeTwoSortedLists()` function:
 ```
@@ -63,7 +63,7 @@ fun mergeTwoSortedLists(list1: List<Int>, list2: List<Int>): List<Int> {
     return result.toList()
 }
 ```
-Time complexity:  
+#### Time complexity:  
 If the `k` lists combined are of size `N`, the time complexity of the above solution is `O(N log(k))`.  
 *Reason*: Every time we pass through all `N` items we reduce the number of lists `k` by half. We stop when we have a single list.
 
