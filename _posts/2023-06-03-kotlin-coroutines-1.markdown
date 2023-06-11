@@ -9,6 +9,11 @@ I have been learning Kotlin recently with a special focus on concurrency with co
 ### What are coroutines (from Kotlin documentation<sup>[1]</sup>)?  
 A coroutine is an instance of suspendable computation. It is conceptually similar to a thread, in the sense that it takes a block of code to run that works concurrently with the rest of the code. However, a coroutine is not bound to any particular thread. It may suspend its execution in one thread and resume in another one.
 
+### Why use coroutines instead of doing things the usual way (thread pools)
+Thread pools are the usual and recommended way of writing concurrent programs in Java. Coroutines have the following advantages over thread pools:
+1. Coroutines are a light-weight abstraction over threads and don't map directly to OS threads, unlike Java `Thread` instances. This means that you can launch way more coroutines than threads in a thread pool. We can do this because coroutines are 'suspendable' (they don't block threads) and a lot more coroutines can be run on a single thread.
+2. Coroutines support the model of [structured concurrency](https://kotlinlang.org/docs/coroutines-basics.html#structured-concurrency) which had advantages like fewer memory leaks and built-in cancellation support. Structured concurrency also ensures that any errors in the code are properly reported and are never lost.
+
 ### Problem: How to merge k sorted lists into a single sorted list?  
 Let's solve the problem of merging k sorted lists such that the resulting list is sorted. For example:  
 When given these 3 lists as input:  
@@ -115,6 +120,6 @@ What we are doing in the concurrent code is analogous to what we did in the non-
 4. In the end, we know that there will be exactly `1` list left in the channel after all coroutines launched above have completed execution. The result of the last expression inside `CoroutineScope` (`channel.receive()`) is automatically returned. 
 
 ### Closing thoughts and next steps
-I really enjoyed learning about the powerful concurrency primitives in Kotlin. As a next step, I am planning to run some benchmarks to see how these two implementations perform in practice based on various inputs.
+I really enjoyed learning about the powerful concurrency primitives in Kotlin! Learning about suspendable functions and coroutines forced me to think about concurrency in a completely different way. As a next step, I am planning to run some benchmarks to see how the two implementations compare in practice.
 
 [1]: https://kotlinlang.org/docs/coroutines-basics.html
