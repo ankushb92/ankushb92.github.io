@@ -120,6 +120,8 @@ What we are doing in the concurrent code is analogous to what we did in the non-
 4. In the end, we know that there will be exactly `1` list left in the channel after all coroutines launched above have completed execution. The result of the last expression inside `CoroutineScope` (`channel.receive()`) is automatically returned. 
 
 ### Closing thoughts and next steps
-I really enjoyed learning about the powerful concurrency primitives in Kotlin! Learning about suspendable functions and coroutines forced me to think about concurrency in a completely different way. As a next step, I am planning to run some benchmarks to see how the two implementations compare in practice.
+I really enjoyed learning about the powerful concurrency primitives in Kotlin! Learning about suspendable functions and coroutines forced me to think about concurrency in a completely different way. As a next step, I am planning to run some performance tests to see how the two implementations compare in practice.
+
+All the code that I described in this blog post can be [accessed here](https://github.com/ankushb92/LearningKotlin/blob/main/src/main/kotlin/mergeKSortedLists.kt).
 
 [1]: https://kotlinlang.org/docs/coroutines-basics.html
