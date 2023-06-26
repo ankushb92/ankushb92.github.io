@@ -19,7 +19,8 @@ Exercism provides a set of tests using which we can determine the correctness of
 (I removed the `@Ignore` annotations while testing).
 
 Let's look at a test for understanding the problem better:
-```
+
+{% highlight kotlin linenos %}
 @Test
 fun computeCellsCanDependOnOtherComputeCells() {
     val reactor = Reactor<Int>()
@@ -32,14 +33,14 @@ fun computeCellsCanDependOnOtherComputeCells() {
     input.value = 3
     assertEquals(96, output.value)
 }
-```
+{% endhighlight %}
 
 The above test creates a single input cell, two compute cells that depend on the input cell, and an output (compute) cell that depends on the other compute cells. The test expects the output to reactively get updated when the input cell is updated.
 
 <br/>
 The test below tests for change notification callbacks:
 
-```
+{% highlight kotlin linenos %}
 @Test
 fun callbacksOnlyFireOnChange() {
     val reactor = Reactor<Int>()
@@ -55,7 +56,7 @@ fun callbacksOnlyFireOnChange() {
     input.value = 4
     assertEquals(listOf(222), vals)
     }
-```
+{% endhighlight %}
 
 <br/>
 Another test that I thought was really cool was the implementation of the Adder digital circuit [here](https://github.com/exercism/kotlin/blob/main/exercises/practice/react/src/test/kotlin/ReactTest.kt#L190).
@@ -66,7 +67,7 @@ Another test that I thought was really cool was the implementation of the Adder 
 
 The problem came with [this](https://github.com/exercism/kotlin/blob/main/exercises/practice/react/src/main/kotlin/React.kt) skeleton implementation:
 
-```
+{% highlight kotlin linenos %}
 class Reactor<T>() {
     // Your compute cell's addCallback method must return an object
     // that implements the Subscription interface.
@@ -74,12 +75,12 @@ class Reactor<T>() {
         fun cancel()
     }
 }
-```
+{% endhighlight %}
 
 <br/>
 **Here is my complete implementation:**  
 
-```
+{% highlight kotlin linenos %}
 interface Subscription<T> {
     val callback: (T) -> Unit
     fun cancel()
@@ -141,7 +142,7 @@ class Reactor<T> {
         }
     }
 }
-```
+{% endhighlight %}
 
 <br/>
 
@@ -150,9 +151,9 @@ I ran the tests and found that my code couldn't pass two (out of twenty) tests. 
 * [callbacksShouldOnlyBeCalledOnceEvenIfMultipleDependenciesChange](https://github.com/exercism/kotlin/blob/main/exercises/practice/react/src/test/kotlin/ReactTest.kt#L147) 
 * [callbacksShouldNotBeCalledIfDependenciesChangeButOutputValueDoesntChange](https://github.com/exercism/kotlin/blob/main/exercises/practice/react/src/test/kotlin/ReactTest.kt#L164)  
 
-Let's look at one of them (as we will see, the other one failed for the same reason):
+Let's look at one of them (the other one failed for the same reason):
 
-```
+{% highlight kotlin linenos %}
 @Test
 fun callbacksShouldNotBeCalledIfDependenciesChangeButOutputValueDoesntChange() {
     val reactor = Reactor<Int>()
@@ -170,7 +171,7 @@ fun callbacksShouldNotBeCalledIfDependenciesChangeButOutputValueDoesntChange() {
 
     assertEquals(listOf<Int>(), vals)
 }
-```
+{% endhighlight %}
 
 The above test failed because in my implementation, update events flowing through our system are not coordinated with each other. `plusOne` and `minusOne` cell values depend on the same `input` cell. However, updates to `plusOne` and `minusOne` independently trigger updates to the `alwaysTwo` cell.
 
@@ -183,9 +184,7 @@ I came up with the implementation below that passes all the tests including the 
 * Take snapshots of values of all descendants of an input cell before and after updating them.
 * After all descendants are updated, take a diff of the snapshots and fire callbacks for only the compute cells that have been updated.
 
-<br/>
-
-```
+{% highlight kotlin linenos %}
 interface Subscription<T> {
     val callback: (T) -> Unit
     fun cancel()
@@ -256,5 +255,5 @@ class Reactor<T> {
         }
     }
 }
-```
+{% endhighlight %}
 

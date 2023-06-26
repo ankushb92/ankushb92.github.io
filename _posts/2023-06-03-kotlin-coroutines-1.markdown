@@ -25,7 +25,7 @@ We can expect an output as follows:
 `[-5, -3, -1, -1, 1, 2, 2, 3, 5, 8, 22, 30, 39, 239]`
 
 Let's first look at a simple solution to this problem (without concurrency):
-```
+{% highlight kotlin linenos %}
 fun mergeKSortedLists(lists: List<List<Int>>): List<Int> {
     val queue = ArrayDeque<List<Int>>()
     lists.forEach { queue.add(it) }
@@ -39,7 +39,7 @@ fun mergeKSortedLists(lists: List<List<Int>>): List<Int> {
     }
     return queue.removeFirst()
 }
-```
+{% endhighlight %}
 
 What we did above is as follows:
 1. Put all `k` input lists in a queue
@@ -49,7 +49,7 @@ What we did above is as follows:
 5. Return the single list remaining in the queue as the answer.
 
 Now let's look at the `mergeTwoSortedLists()` function:
-```
+{% highlight kotlin linenos %}
 fun mergeTwoSortedLists(list1: List<Int>, list2: List<Int>): List<Int> {
     var index1 = 0
     var index2 = 0
@@ -67,13 +67,15 @@ fun mergeTwoSortedLists(list1: List<Int>, list2: List<Int>): List<Int> {
     result.addAll(list2.slice(index2 until list2.size))
     return result.toList()
 }
-```
+{% endhighlight %}
+
 #### Time complexity:  
 If the `k` lists combined are of size `N`, the time complexity of the above solution is `O(N log(k))`.  
 *Reason*: Every time we pass through all `N` items we reduce the number of lists `k` by half. We stop when we have a single list.
 
 ### Solution with coroutines
-```
+
+{% highlight kotlin linenos %}
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
@@ -104,7 +106,7 @@ suspend fun concurrentlyMergeKSortedLists(lists: List<List<Int>>): List<Int> = c
     jobs.joinAll()
     channel.receive()
 }
-```
+{% endhighlight %}
 
 ### Explanation
 Let's try to understand a few keywords in the above code:
