@@ -80,7 +80,7 @@ class Reactor<T>() {
 <br/>
 **Here is my complete implementation:**  
 
-{% highlight kotlin linenos %}
+{% highlight kotlin %}
 interface Subscription<T> {
     val callback: (T) -> Unit
     fun cancel()
@@ -184,7 +184,7 @@ I came up with the implementation below that passes all the tests including the 
 * Take snapshots of values of all descendants of an input cell before and after updating them.
 * After all descendants are updated, take a diff of the snapshots and fire callbacks for only the compute cells that have been updated.
 
-{% highlight kotlin linenos %}
+{% highlight kotlin %}
 interface Subscription<T> {
     val callback: (T) -> Unit
     fun cancel()
@@ -207,8 +207,11 @@ class Reactor<T> {
     private val cellToCellsMap = mutableMapOf<Cell<T>, MutableSet<ComputeCell>>()
 
     private fun getAllDescendants(cell: Cell<T>): List<ComputeCell> {
-        if (!cellToCellsMap.containsKey(cell) && (cell is ComputeCell)) return listOf(cell)
-        return cellToCellsMap[cell]?.map { child -> getAllDescendants(child) }?.flatten() ?: listOf()
+        if (!cellToCellsMap.containsKey(cell) && (cell is ComputeCell))
+            return listOf(cell)
+        return cellToCellsMap[cell]?.map {
+            child -> getAllDescendants(child)
+        }?.flatten() ?: listOf()
     }
 
     private fun takeSnapshot(inputCell: InputCell): Map<ComputeCell, T> {
@@ -224,7 +227,9 @@ class Reactor<T> {
                 cellToCellsMap[this@InputCell]?.map { it.setValue() }
                 val afterSnapshot = this@Reactor.takeSnapshot(this@InputCell)
 
-                val updatedComputeCells = beforeSnapshot.keys.filter { key -> beforeSnapshot[key] != afterSnapshot[key] }
+                val updatedComputeCells = beforeSnapshot.keys.filter {
+                        key -> beforeSnapshot[key] != afterSnapshot[key]
+                }
                 updatedComputeCells.map { cell ->
                     cell.subscriptions.map {sub -> sub.callback(cell.value) }
                 }
@@ -242,8 +247,9 @@ class Reactor<T> {
 
         init {
             inputs.map {
-                this@Reactor.cellToCellsMap.getOrPut(it) {mutableSetOf(this@ComputeCell)}
-                    .add(this@ComputeCell)
+                this@Reactor.cellToCellsMap.getOrPut(it) {
+                    mutableSetOf(this@ComputeCell)
+                }.add(this@ComputeCell)
             }
             setValue = {
                 value = computeLogic(inputs.map {cell -> cell.value})
