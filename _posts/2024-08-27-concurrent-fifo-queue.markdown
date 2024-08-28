@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Concurrent FIFO Queue"
+title: "Concurrent FIFO Queue implementations in Java and C#"
 tags: [ programming, C#, java, concurrency, data structures ]
 full-width: true
 ---
@@ -80,14 +80,16 @@ The downsides:
 * Acquiring and releasing of locks has a performance overhead, which introduces additional latency to operations.
 * Locking and blocking prevent multiple threads from performing operations concurrently, resulting in reduced throughput.
 
-### Lock-free implementation
+### Lock-free
 
 #### Why lock-free?
 
 While we saw above that a locking based implementation is possible, lock-free (and non-blocking) implementations exist to avoid the downsides of locking and blocking: increased latency and reduced throughput. `ConcurrentQueue` in C# and `ConcurrentLinkedQueue` in Java are lock-free implementations.
 
+#### Implementation
+
 The lock-free implementations in both Java and C# are inspired by a 1996 paper by Michael-Scott titled "Simple, Fast, and Practical Non-Blocking and Blocking Concurrent Queue Algorithms":<br/>
-https://www.cs.rochester.edu/~scott/papers/1996_PODC_queues.pdf
+[https://www.cs.rochester.edu/~scott/papers/1996_PODC_queues.pdf](https://www.cs.rochester.edu/~scott/papers/1996_PODC_queues.pdf)
 
 A very important component of the lock-free implementation is the atomic [CAS](https://en.wikipedia.org/wiki/Compare-and-swap) (compare-and-swap) operation. Java provides `AtomicReference.compareAndSet` for this and C# provides us `Interlocked.CompareExchange`.
 
@@ -97,12 +99,15 @@ A brief description of the algorithm:
     * Enqueue: a new node is created and linked as the new tail using CAS.
     * Dequeue: the head pointer is updated to the next node using CAS.
 
-The Java implementation can be [found here](https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/java/util/concurrent/ConcurrentLinkedQueue.java) and C# implementation can be [found here](https://github.com/microsoft/referencesource/blob/master/mscorlib/system/collections/Concurrent/ConcurrentQueue.cs).
+If you'd like to see concrete implementations:
+* Java implementation can be [found here](https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/java/util/concurrent/ConcurrentLinkedQueue.java).
+* C# implementation can be [found here](https://github.com/microsoft/referencesource/blob/master/mscorlib/system/collections/Concurrent/ConcurrentQueue.cs).
 
 
 ### Async implementation
 
-Another interesting way to implement a Concurrent Queue is by leveraging asynchronous programming (async/await in C#). C# provides us with the `Channels` [library](https://learn.microsoft.com/en-us/dotnet/core/extensions/channels) for this. This provides an async (non-blocking) alternative to `BlockingCollection` we discussed above for producer-consumer scenarios.
+Another interesting way to implement a Concurrent Queue is by providing asynchronous programming capabilities to users (async/await in C#).<br/>
+C# provides us with the `Channels` [library](https://learn.microsoft.com/en-us/dotnet/core/extensions/channels) for this. This is an async (non-blocking) alternative to `BlockingCollection` we discussed above for producer-consumer scenarios.
 
 Without going into the implementation details of `Channels`, let's look at an example of the producer/consumer pattern from the [official documentation](https://learn.microsoft.com/en-us/dotnet/core/extensions/channels#producer-patterns).
 
@@ -136,3 +141,8 @@ static async ValueTask ConsumeWithAwaitForeachAsync(
     }
 }
 {% endhighlight %}
+
+### Closing thoughts
+
+Both Java and C# provide a variety of implementations of Concurrent FIFO Queue depending on various use cases like producer-consumer, high throughput, asynchronous, etc.<br/>
+Building a good understanding of these may be helpful while navigating codebases that use one or more of the different types of these data structures and concurency primitives; or in choosing the right implementation for the task at hand while building new software or refactoring existing code for scalability.
